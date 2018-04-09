@@ -1,0 +1,67 @@
+/************************/
+/* GENERAL              */
+/************************/
+
+*, *::before, *::after {
+    box-sizing: inherit;
+}
+
+html {
+    box-sizing: border-box;
+    line-height: 1.5;
+}
+
+body {
+    color: #333;
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+/************************/
+/* CONTAINERS           */
+/************************/
+
+.container-sm {
+    max-width: 30rem;
+    margin: 0 auto;
+}
+
+.container-md {
+    max-width: 60rem;
+    margin: 0 auto;
+}
+
+/************************/
+/* FLOAT                */
+/************************/
+
+.right {
+    float: right;
+}
+
+.clear {
+    clear: both;
+}
+
+/************************/
+/* TYPOGRAPHY           */
+/************************/
+
+.text-center {
+    text-align: center;
+}
+
+/************************/
+/* BUTTONS              */
+/************************/
+
+.button {
+    padding: 1em;
+    background-color: #03A9F4;
+    color: white;
+    font-weight: 700;
+    text-transform: uppercase;
+}
