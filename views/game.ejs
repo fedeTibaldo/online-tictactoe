@@ -1,11 +1,17 @@
 <% include header %>
 
-<!-- game board here -->
+<!-- interface here -->
 
 <% include socketio %>
 <script>
     window.addEventListener('DOMContentLoaded', () => {
         var socket = io();
+        socket.on('match successful', () => {
+            document.body.style.backgroundColor = '#333'
+        })
+        socket.on('sync error', () => {
+            document.body.style.backgroundColor = 'red'
+        })
     })
 </script>
 
