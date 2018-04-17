@@ -9,11 +9,8 @@
   "author": "fedeTibaldo <fedetibaldo@pm.me>",
   "license": "ISC",
   "dependencies": {
-    "body-parser": "^1.18.2",
-    "connect": "^3.6.6",
     "ejs": "^2.5.8",
     "express": "^4.16.3",
-    "express-session": "^1.15.6",
     "socket.io": "^2.1.0"
   }
 }
