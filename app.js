@@ -1,44 +1,63 @@
 /* ExpressJS */
 const express = require('express')
 const app = express()
-const server = require('http').Server(app)
-/* Socket.IO */
-const io = require('socket.io')(server)
 
-let waitingPlayer = undefined
-
+// Express middleware
 app.use('/static', express.static('assets'))
 app.set('view engine', 'ejs')
 
+// Routes
 app.get('/', (req, res) => {
     res.render('home', {
         pageTitle: 'Online TicTacToe'
     })
 })
-
 app.get('/play', (req, res) => {
     res.render('game', {
         pageTitle: 'Play @ Online TicTacToe',
     })
 })
 
-io.on('connection', function(socket){
-    if (!waitingPlayer)
-        waitingPlayer = socket
-    else {
-        let room = `${waitingPlayer.id}${socket.id}`
-        socket.join(room)
-        waitingPlayer.join(room)
-        socket.emit('match successful')
-        waitingPlayer.emit('match successful')
-        waitingPlayer = undefined
+// Servers
+const server = require('http').Server(app)
+const io = require('socket.io')(server)
+
+function resumeGame(socket) {
+    if (typeof socket.request.session.room !== 'undefined') {
+        console.log('here')
+        let clients = io.sockets.clients(socket.request.session.room)
+        if (clients.length > 1) {
+            //resume
+        } else {
+            socket.emit('room empty')
+        }
+        return true
     }
-    socket.on('disconnecting', () => {
-        if (waitingPlayer && socket.id === waitingPlayer.id)
-            waitingPlayer = undefined
-        for(let room of Object.keys(socket.rooms))
-            socket.to(socket.rooms[room]).emit('sync error')
-    });
-});
+}
+
+function createRoom(p1, p2) { 
+    let roomId = `${p1.id}${p2.id}`
+    //games[roomId] = new Game()
+    return roomId
+}
+
+function nextMove() { }
+
+io.on('connection', function(socket) {
+    socket.on('queue', function() {
+        if (!waitingPlayer)
+            return waitingPlayer = socket
+        let roomId = createRoom(waitingPlayer, socket);
+        [socket, waitingPlayer].forEach( p => p.emit('match', roomId) )
+    })
+    socket.on('start', function(roomId) {
+        // if player left room
+        //  add it again
+        // if player is alone
+        //  socket.emit('empty')
+        // else
+        //  start game
+    })
+})
 
 server.listen(80, () => console.log('Example app listening on port 80!'))

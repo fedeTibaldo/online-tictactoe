@@ -6,10 +6,7 @@
 <script>
     window.addEventListener('DOMContentLoaded', () => {
         var socket = io();
-        socket.on('match successful', () => {
-            document.body.style.backgroundColor = '#333'
-        })
-        socket.on('sync error', () => {
+        socket.on('test', () => {
             document.body.style.backgroundColor = 'red'
         })
     })
