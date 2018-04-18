@@ -22,37 +22,17 @@ app.get('/play', (req, res) => {
 const server = require('http').Server(app)
 const io = require('socket.io')(server)
 
-function resumeGame(socket) {
-    if (typeof socket.request.session.room !== 'undefined') {
-        console.log('here')
-        let clients = io.sockets.clients(socket.request.session.room)
-        if (clients.length > 1) {
-            //resume
-        } else {
-            socket.emit('room empty')
-        }
-        return true
-    }
-}
-
-function createRoom(p1, p2) { 
-    let roomId = `${p1.id}${p2.id}`
-    //games[roomId] = new Game()
-    return roomId
-}
-
-function nextMove() { }
+// Game manager
+let g = require('./game')
 
 io.on('connection', function(socket) {
     socket.on('queue', function() {
-        if (!waitingPlayer)
-            return waitingPlayer = socket
-        let roomId = createRoom(waitingPlayer, socket);
-        [socket, waitingPlayer].forEach( p => p.emit('match', roomId) )
+        let roomId
+        if (roomId = g.findMatch(socket))
+            g.getMatch(roomId).players.forEach( p => p.emit('test', roomId) )
     })
     socket.on('start', function(roomId) {
-        // if player left room
-        //  add it again
+        // add player to room
         // if player is alone
         //  socket.emit('empty')
         // else

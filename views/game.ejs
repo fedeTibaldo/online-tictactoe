@@ -9,6 +9,7 @@
         socket.on('test', () => {
             document.body.style.backgroundColor = 'red'
         })
+        socket.emit('queue')
     })
 </script>
 
