@@ -133,8 +133,6 @@ a {
 /* SVG                   */
 /*************************/
 
-/* General */
-
 line {
 	stroke-width: 1;
 	stroke-linecap: round;
@@ -144,8 +142,6 @@ circle {
 	fill: none;
 }
 
-/* Colors */
-
 .x {
 	stroke: #f44336;
 }
@@ -154,7 +150,9 @@ circle {
 	stroke: #2196F3;
 }
 
-/* Groups */
+/*************************/
+/* SVG GROUPS            */
+/*************************/
 
 .game-board {
  	stroke: #607D8B;
@@ -182,7 +180,9 @@ circle {
 	stroke-dashoffset: 21.75;
 }
 
-/* Animation */
+/*************************/
+/* SVG ANIMATIONS        */
+/*************************/
 
 .dash {
 	animation: dash .15s linear forwards;
