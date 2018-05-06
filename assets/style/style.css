@@ -3,16 +3,18 @@
 /************************/
 
 *, *::before, *::after {
-    box-sizing: inherit;
+	box-sizing: inherit;
 }
 
 html {
     box-sizing: border-box;
-    line-height: 1.5;
+	line-height: 1.5;
+	height: 100%;
 }
 
 body {
-    color: #333;
+	color: #333;
+	height: 100%;
 }
 
 a {
@@ -24,14 +26,22 @@ a {
 /* CONTAINERS           */
 /************************/
 
+.container-flex {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+}
+
 .container-sm {
     max-width: 30rem;
-    margin: 0 auto;
+	margin: 0 auto;
+	width: 100%;
 }
 
 .container-md {
     max-width: 60rem;
-    margin: 0 auto;
+	margin: 0 auto;
+	width: 100%;
 }
 
 /************************/
