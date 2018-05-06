@@ -70,3 +70,128 @@ a {
 .full {
     width: 100%;
 }
+
+/************************/
+/* TICTACTOE            */
+/************************/
+
+#announcement {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background-color: white;
+	z-index: 10;
+	opacity: 0;
+	visibility: hidden;
+	transition: opacity 0.5s ease-in 0.15s;
+}
+#announcement.visible {
+	visibility: visible;
+	opacity: 0.8;
+}
+
+.game-board-container {
+	position: relative;
+}
+
+.game-board-container:after {
+	content: "";
+	display: block;
+	padding-bottom: 100%;
+}
+
+.game-board-container>* {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+}
+
+.game-board {
+	display: flex;
+	flex-wrap: wrap;
+	padding: 4%;
+}
+
+.game-box {
+    width: 33%;
+	height: 33%;
+}
+
+/*************************/
+/* SVG                   */
+/*************************/
+
+/* General */
+
+line {
+	stroke-width: 1;
+	stroke-linecap: round;
+}
+
+circle {
+	fill: none;
+}
+
+/* Colors */
+
+.x {
+	stroke: #f44336;
+}
+
+.o {
+	stroke: #2196F3;
+}
+
+/* Groups */
+
+.game-board {
+ 	stroke: #607D8B;
+}
+
+.x-group {
+	stroke-dasharray: 6;
+	stroke-dashoffset: 7;
+}
+
+.o-group {
+	transform: rotate(-150deg);
+	transform-origin: center;
+	stroke-dasharray: 13;
+	stroke-dashoffset: 13.25;
+}
+
+.win-stroke {
+	stroke-dasharray: 15.5;
+	stroke-dashoffset: 15.75;
+}
+
+.win-stroke-diagonal {
+	stroke-dasharray: 21.5;
+	stroke-dashoffset: 21.75;
+}
+
+/* Animation */
+
+.dash {
+	animation: dash .15s linear forwards;
+}
+
+.dash-long {
+	animation: dash .25s ease-in forwards;
+}
+
+.dash-delay {
+	animation: dash .15s linear forwards .15s;
+}
+
+.dash-delay-long {
+	animation: dash .2s linear forwards .5s;
+}
+
+@keyframes dash {
+	to {
+		stroke-dashoffset: 0;
+	}
+}
