@@ -5,11 +5,21 @@
 <% include socketio %>
 <script>
     window.addEventListener('DOMContentLoaded', () => {
-        var socket = io();
+        // instantiate soket
+        let socket = io();
+        // bind listeners
         socket.on('test', () => {
             document.body.style.backgroundColor = 'red'
         })
-        socket.emit('queue')
+        socket.on('match', (matchId) => {
+            localStorage.setItem('matchId', matchId)
+        })
+        // init
+        let matchId
+        if (matchId = localStorage.getItem("matchId"))
+            socket.emit('start', matchId)
+        else
+            socket.emit('queue')
     })
 </script>
 
