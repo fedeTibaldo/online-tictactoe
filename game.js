@@ -8,6 +8,12 @@ module.exports = (function() {
 				if (!~this.players.indexOf(p))
 					this.players.push(p)
 		},
+		removePlayer: function(p) {
+			this.players.splice(
+				this.players.indexOf(p),
+				1
+			)
+		},
 		isFull: function() {
 			return this.players.length === 2
 		},
