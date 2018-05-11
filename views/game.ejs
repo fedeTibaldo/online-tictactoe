@@ -3,7 +3,7 @@
 
 <div class="container-md">
 		
-	<div id="announcement" class="container-flex"></div>
+	<div id="announceBox" class="container-flex"></div>
 	<div class="container-sm game-board-container">
 		<svg viewBox="0 0 17 17" version="1.1" xmlns="http://www.w3.org/2000/svg">
 			<g class="game-board">
@@ -30,28 +30,93 @@
 </div>
 
 <% include socketio %>
+<script src="/static/js/tictactoe.js"></script>
 <script>
+
+	const announcer = (function() {
+
+		let announceBox
+
+		function announce(msg) {
+			let container = document.createElement('div')
+			container.classList.add('container-sm', 'text-center')
+
+			let p = document.createElement('p')
+			p.textContent = msg
+
+			let btn = document.createElement('a')
+			btn.classList.add('button')
+			btn.href = '/'
+			btn.title = 'Exit'
+			btn.textContent = 'Exit to title'
+
+			container.appendChild(p)
+			container.appendChild(btn)
+
+			announceBox.appendChild(container)
+			announceBox.classList.add('visible')
+		}
+
+		function deAnnounce() {
+			while(announceBox.firstChild)
+				announceBox.removeChild(announceBox.firstChild)
+			announceBox.classList.remove('visible')
+		}
+
+		function init(el) {
+			announceBox = el
+		}
+
+		return {
+			init: init,
+			announce: announce,
+			deAnnounce: deAnnounce
+		}
+
+	})()
+
+
 	window.addEventListener('DOMContentLoaded', () => {
+		let announcer_instance = Object.create(announcer)
+		announcer_instance.init(document.getElementById('announceBox'))
+		let tictactoe_instance = Object.create(tictactoe)
+		tictactoe_instance.init(
+			document.getElementsByClassName('game-box'),
+			document.getElementById('win-stroke')
+		)
 		// instantiate soket
 		let socket = io()
 		// bind listeners
-		socket.on('test', () => {
-			document.body.style.backgroundColor = 'red'
+		socket.on('empty', () => {
+			announcer_instance.announce('Your opponent left the match')
 		})
-		socket.on('match', (matchId) => {
-			localStorage.setItem('matchId', matchId)
+		socket.on('wait', (gameState) => {
+			tictactoe_instance.changeTurn()
+			announcer_instance.deAnnounce()
+			tictactoe_instance.update(gameState)
+			tictactoe_instance.disable()
 		})
-		// init
-		tictactoe.init(
-				document.getElementsByClassName('game-box'),
-				document.getElementById('win-stroke'),
-				document.getElementById('announcement')
-		)
-		let matchId
-		if (matchId = localStorage.getItem("matchId"))
-			socket.emit('start', matchId)
-		else
-			socket.emit('queue')
+		socket.on('move', (gameState) => {
+			tictactoe_instance.changeTurn()
+			announcer_instance.deAnnounce()
+			tictactoe_instance.update(gameState)
+			tictactoe_instance.enable()
+		})
+		socket.on('win', (gameState) => {
+			tictactoe_instance.update(gameState)
+			announcer_instance.announce('You won!')
+		})
+		socket.on('lose', (gameState) => {
+			tictactoe_instance.update(gameState)
+			announcer_instance.announce('You lost...')
+		})
+		socket.on('tie', (gameState) => {
+			tictactoe_instance.update(gameState)
+			announcer_instance.announce('Oh snap! It\'s a tie.')
+		})
+
+		announcer_instance.announce('Looking for a match...')
+		socket.emit('queue')
 	})
 </script>
 

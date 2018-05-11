@@ -39,6 +39,10 @@ module.exports = (function() {
 		}
 	}
 
+	function deleteMatch(id) {
+		matches[id] = undefined
+	}
+
 	function getMatch(id) {
 		return matches[id]
 	}
@@ -46,5 +50,6 @@ module.exports = (function() {
 	return {
 		findMatch: findMatch,
 		getMatch: getMatch,
+		deleteMatch: deleteMatch,
 	}
 })()

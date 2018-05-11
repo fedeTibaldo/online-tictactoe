@@ -27,30 +27,19 @@ let g = require('./game')
 
 io.on('connection', function(socket) {
     let roomId
-    function findMatch() {
-        if (roomId = g.findMatch(socket))
-            g.getMatch(roomId).players.forEach( p => p.emit('match', roomId) )
-    }
     socket.on('queue', function() {
-        findMatch()
-    })
-    socket.on('start', function(previousRoomId) {
-        roomId = previousRoomId
-        let match = g.getMatch(roomId)
-        if (match) {
-            match.addPlayer(socket)
-            if (!match.isFull())
-                socket.emit('test')
-        }
-        else {
-            findMatch()
+        if (roomId = g.findMatch(socket)) {
+            let match = g.getMatch(roomId)
+            match.players[0].emit('move')
+            match.players[1].emit('wait')
         }
     })
     socket.on('disconnecting', function() {
         let match = g.getMatch(roomId)
         if (match) {
             match.removePlayer(socket)
-            console.log(match)
+            if (match.players[0])
+                match.players[0].emit('empty')
         }
     })
 })
